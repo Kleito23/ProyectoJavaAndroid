@@ -62,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
         }else if(color == Carta.Color.Z){
             linea.setBackgroundColor(Color.BLUE);
         }
+        System.out.println(juego.getManoMaquina());
+        System.out.println(jugador.getCartas());
         //Se inserta la carta como ImageView al Layout central "Linea"
         String p = primerCarta.getColorStr().toLowerCase() + primerCarta.getValor();
         int id = getResources().getIdentifier(p,"drawable",getPackageName());
@@ -116,6 +118,7 @@ public class MainActivity extends AppCompatActivity {
                 case "+2":
                     nombre += "mas2";
                     break;
+
                 default:
                     nombre += c.getValor();
                     break;
@@ -156,6 +159,7 @@ public class MainActivity extends AppCompatActivity {
                 case "+2":
                     nombre += "mas2";
                     break;
+
                 default:
                     nombre += c.getValor();
                     break;
@@ -214,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
             if(c.getColor() == color || c.getColor() == Carta.Color.N){
                 if(c.getColor() == Carta.Color.N){
                     mostrarDialogoEmergente(c,juego,jugador, timer);
+
 
 
                 }else{
@@ -280,7 +285,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }else{
                     /* Aquí entra para las cartas comodin*/
-                    if(carta.getColor() == color || carta.getColor() == Carta.Color.N ){
+                    if(carta.getColor() == color || carta.getColor() == Carta.Color.N){
                         if(carta.getColor() == Carta.Color.N){
                             mostrarDialogoEmergenteMaquina(carta,jugador,juego,timer);
 
@@ -300,6 +305,7 @@ public class MainActivity extends AppCompatActivity {
                                     mostrarDialogoEmergente(4, true, timer, juego, jugador);
 
                                     break;
+
                                 case "^":
                                 case "&":
                                     mostrarDialogoEmergente("Perdiste el turno!");
@@ -363,6 +369,7 @@ public class MainActivity extends AppCompatActivity {
             case "+2":
                 nombre += "mas2";
                 break;
+
             default:
                 nombre += c.getValor();
                 break;
@@ -393,6 +400,7 @@ public class MainActivity extends AppCompatActivity {
             case "+2":
                 nombre += "mas2";
                 break;
+
             default:
                 nombre += c.getValor();
                 break;
@@ -433,14 +441,19 @@ public class MainActivity extends AppCompatActivity {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                if(c.getValor().equals("+2")){
-                    agregarCartaMano(2,juego.getManoMaquina(),juego,mazoMaquina,false,jugador, timer);
-                    mostrarDialogoEmergente(2,false,timer,juego,jugador);
-                }else if(c.getValor().equals("+4")){
-                    agregarCartaMano(4,juego.getManoMaquina(),juego,mazoMaquina,false,jugador, timer);
-                    mostrarDialogoEmergente(4,false,timer,juego,jugador);
-                }else{
-                    maquina(juego,jugador,300,300,timer);
+                switch (c.getValor()) {
+                    case "+2":
+                        agregarCartaMano(2, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
+                        mostrarDialogoEmergente(2, false, timer, juego, jugador);
+                        break;
+                    case "+4":
+                        agregarCartaMano(4, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
+                        mostrarDialogoEmergente(4, false, timer, juego, jugador);
+                        break;
+
+                    default:
+                        maquina(juego, jugador, 300, 300, timer);
+                        break;
                 }
             }
         });
@@ -477,12 +490,16 @@ public class MainActivity extends AppCompatActivity {
         dialog.setOnDismissListener(new DialogInterface.OnDismissListener() {
             @Override
             public void onDismiss(DialogInterface dialogInterface) {
-                if(carta.getValor().equals("+2")){
-                    agregarCartaMano(2,jugador.getCartas(),juego,mazoJugador,true,jugador, timer);
-                    mostrarDialogoEmergente(2,true,timer,juego,jugador);
-                }else if(carta.getValor().equals("+4")){
-                    agregarCartaMano(4,jugador.getCartas(),juego,mazoJugador,true,jugador, timer);
-                    mostrarDialogoEmergente(4,true,timer,juego,jugador);
+                switch (carta.getValor()) {
+                    case "+2":
+                        agregarCartaMano(2, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
+                        mostrarDialogoEmergente(2, true, timer, juego, jugador);
+                        break;
+                    case "+4":
+                        agregarCartaMano(4, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
+                        mostrarDialogoEmergente(4, true, timer, juego, jugador);
+                        break;
+
                 }
             }
         });

@@ -16,13 +16,16 @@ public class Baraja {
 
     public void crearCartaNumericas(Color color){
         for(int i = 0; i <= 9; i++){
-            Carta c = new CartaNumerica(color, i+"");
+            Carta c = new CartaNumerica(color, i + "");
             cartas.add(c);
+
+
         }
     }
 
     public void crearCartaComodin(Color color, String v){
         if(color != Color.N){
+
             if(v.equals("%")== false){
                 Carta c1 = new CartaComodin(color, v);
                 Carta c2 = new CartaComodin(color, v);
@@ -37,6 +40,7 @@ public class Baraja {
                 cartas.add(c2);
             }
         }
+
     }
 
     public void inicializarBaraja(){
@@ -49,6 +53,7 @@ public class Baraja {
             for(String v : Carta.getComodines()){
                 crearCartaComodin(color, v);
             }
+
         }
 
         
