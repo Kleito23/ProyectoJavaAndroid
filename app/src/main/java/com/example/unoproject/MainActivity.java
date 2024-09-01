@@ -126,84 +126,7 @@ public class MainActivity extends AppCompatActivity {
             imv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(c instanceof CartaNumerica){
-                        /* Si la carta es numérica entra aquí(Jugador)*/
-                        if(c.getColor() == color || c.getValor().equals(lineaJuego.get(0).getValor())){
-                            lineaJuego.add(0,c);
-                            color = c.getColor();
-                            linea.removeAllViews();
-                            insertarImv(c,width,height,linea,false,juego,jugador, timer);
-                            mazoJugador.removeView(imv);
-                            jugador.getCartas().remove(c);
-                            if(color == Carta.Color.R){
-                                linea.setBackgroundColor(Color.RED);
-                            } else if (color == Carta.Color.V) {
-                                linea.setBackgroundColor(Color.GREEN);
-                            }else if( color == Carta.Color.A){
-                                linea.setBackgroundColor(Color.YELLOW);
-                            }else if(color == Carta.Color.Z){
-                                linea.setBackgroundColor(Color.BLUE);
-                            }
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            maquina(juego,jugador,width,height, timer);
-                                            if(juego.getManoMaquina().size() == 1){
-                                                mostrarDialogoEmergente("UNO!");
-                                            }else if(juego.getManoMaquina().isEmpty()){
-                                                mostrarDialogoEmergente("Ganó la maquina!");
-                                            }
-                                        }
-                                    });
-                                }
-                            },1000);
-
-
-                        }
-                    }else{
-                        /* Si la carta es comodin entra aquí (Jugador)*/
-                        if(c.getColor() == color || c.getColor() == Carta.Color.N){
-                            if(c.getColor() == Carta.Color.N){
-                                mostrarDialogoEmergente(c,juego,jugador, timer);
-
-
-                            }else{
-                                switch (c.getValor()) {
-                                    case "+2":
-                                        agregarCartaMano(2, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
-                                        mostrarDialogoEmergente(2, false, timer, juego, jugador);
-
-                                        break;
-                                    case "+4":
-                                        agregarCartaMano(4, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
-                                        mostrarDialogoEmergente(4, false, timer, juego, jugador);
-
-                                        break;
-                                    case "^":
-                                    case "&":
-                                        mostrarDialogoEmergente("La máquina pierde el turno!");
-                                        break;
-                                }
-                                color = c.getColor();
-                            }
-                            linea.removeAllViews();
-                            mazoJugador.removeView(imv);
-                            jugador.getCartas().remove(c);
-                            lineaJuego.add(0,c);
-                            insertarImv(c,width,height,linea,false,juego,jugador, timer);
-                            if(jugador.getCartas().size()== 1){
-                                mostrarDialogoEmergente("UNO!");
-                            }else if(jugador.getCartas().isEmpty()){
-                                mostrarDialogoEmergente("GANASTE!");
-
-                            }
-
-                        }
-                    }
-
+                    jugador(c,juego,jugador,timer,width,height,imv);
 
                 }
 
@@ -245,6 +168,170 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+    }
+
+    /* ------------------------ METODOS -----------------------------------------------------*/
+    public void jugador(Carta c,Juego juego, Jugador jugador, Timer timer, int width, int height, ImageView imv){
+        if(c instanceof CartaNumerica){
+            /* Si la carta es numérica entra aquí(Jugador)*/
+            if(c.getColor() == color || c.getValor().equals(lineaJuego.get(0).getValor())){
+                lineaJuego.add(0,c);
+                color = c.getColor();
+                linea.removeAllViews();
+                insertarImv(c,width,height,linea,false,juego,jugador, timer);
+                mazoJugador.removeView(imv);
+                jugador.getCartas().remove(c);
+                if(color == Carta.Color.R){
+                    linea.setBackgroundColor(Color.RED);
+                } else if (color == Carta.Color.V) {
+                    linea.setBackgroundColor(Color.GREEN);
+                }else if( color == Carta.Color.A){
+                    linea.setBackgroundColor(Color.YELLOW);
+                }else if(color == Carta.Color.Z){
+                    linea.setBackgroundColor(Color.BLUE);
+                }
+                timer.schedule(new TimerTask() {
+                    @Override
+                    public void run() {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                maquina(juego,jugador,width,height, timer);
+                                if(juego.getManoMaquina().size() == 1){
+                                    mostrarDialogoEmergente("UNO!");
+                                }else if(juego.getManoMaquina().isEmpty()){
+                                    mostrarDialogoEmergente("Ganó la maquina!");
+                                }
+                            }
+                        });
+                    }
+                },1000);
+
+
+            }
+        }else{
+            /* Si la carta es comodin entra aquí (Jugador)*/
+            if(c.getColor() == color || c.getColor() == Carta.Color.N){
+                if(c.getColor() == Carta.Color.N){
+                    mostrarDialogoEmergente(c,juego,jugador, timer);
+
+
+                }else{
+                    switch (c.getValor()) {
+                        case "+2":
+                            agregarCartaMano(2, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
+                            mostrarDialogoEmergente(2, false, timer, juego, jugador);
+
+                            break;
+                        case "+4":
+                            agregarCartaMano(4, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
+                            mostrarDialogoEmergente(4, false, timer, juego, jugador);
+
+                            break;
+                        case "^":
+                        case "&":
+                            mostrarDialogoEmergente("La máquina pierde el turno!");
+                            break;
+                    }
+                    color = c.getColor();
+                }
+                linea.removeAllViews();
+                mazoJugador.removeView(imv);
+                jugador.getCartas().remove(c);
+                lineaJuego.add(0,c);
+                insertarImv(c,width,height,linea,false,juego,jugador, timer);
+                if(jugador.getCartas().size()== 1){
+                    mostrarDialogoEmergente("UNO!");
+                }else if(jugador.getCartas().isEmpty()){
+                    mostrarDialogoEmergente("GANASTE!");
+
+                }
+
+            }
+        }
+    }
+    public void maquina(Juego juego,Jugador jugador,int width,int height, Timer timer){
+        if(isPlayerBlocked){
+            /* Entra aquí cuando la maquina bloquea al jugador y tiene que volver a lanzar carta. Se usa recursividad aquí*/
+            isPlayerBlocked = false;
+            maquina(juego,jugador,width,height, timer);
+        }else{
+            /* Aquí empezara a buscar la primera carta que pueda lanzar*/
+            for(Carta carta: juego.getManoMaquina()){
+                if(carta instanceof CartaNumerica){
+                    if(carta.getValor().equals(lineaJuego.get(0).getValor()) || carta.getColor() == lineaJuego.get(0).getColor()){
+                        color = carta.getColor();
+                        linea.removeAllViews();
+                        insertarImv(carta,width,height,linea,mazoMaquina);
+                        lineaJuego.add(0,carta);
+                        juego.getManoMaquina().remove(carta);
+                        if(color == Carta.Color.R){
+                            linea.setBackgroundColor(Color.RED);
+                        } else if (color == Carta.Color.V) {
+                            linea.setBackgroundColor(Color.GREEN);
+                        }else if( color == Carta.Color.A){
+                            linea.setBackgroundColor(Color.YELLOW);
+                        }else if(color == Carta.Color.Z){
+                            linea.setBackgroundColor(Color.BLUE);
+                        }
+                        /* Los returns que ven aqui sirve para que, al encontrar una carta y lanzar, ya salga de la función.
+                         * Si no le ponemos el return el for seguirá buscando y lanzando cartas. */
+                        return;
+                    }
+                }else{
+                    /* Aquí entra para las cartas comodin*/
+                    if(carta.getColor() == color || carta.getColor() == Carta.Color.N ){
+                        if(carta.getColor() == Carta.Color.N){
+                            mostrarDialogoEmergenteMaquina(carta,jugador,juego,timer);
+
+                            linea.removeAllViews();
+                            lineaJuego.add(0,carta);
+                            insertarImv(carta,width,height,linea,mazoMaquina);
+                            juego.getManoMaquina().remove(carta);
+                        }else{
+                            switch (carta.getValor()) {
+                                case "+2":
+                                    agregarCartaMano(2, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
+                                    mostrarDialogoEmergente(2, true, timer, juego, jugador);
+
+                                    break;
+                                case "+4":
+                                    agregarCartaMano(4, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
+                                    mostrarDialogoEmergente(4, true, timer, juego, jugador);
+
+                                    break;
+                                case "^":
+                                case "&":
+                                    mostrarDialogoEmergente("Perdiste el turno!");
+                                    isPlayerBlocked = true;
+                                    linea.removeAllViews();
+                                    lineaJuego.add(0, carta);
+                                    insertarImv(carta, width, height, linea, mazoMaquina);
+                                    juego.getManoMaquina().remove(carta);
+                                    maquina(juego, jugador, width, height, timer);
+                                    return;
+                            }
+                            color = carta.getColor();
+                            linea.removeAllViews();
+                            lineaJuego.add(0,carta);
+                            insertarImv(carta,width,height,linea,mazoMaquina);
+                            juego.getManoMaquina().remove(carta);
+                        }
+
+                        return;
+                    }
+
+
+
+                }
+            }
+            /* Aqui entra cuando no encuentra ninguna carta para lanzar. Tomará una carta automaticamente de la baraja y perderá el turno*/
+            Carta c = juego.getBaraja().getCarta(0);
+            juego.getManoMaquina().add(c);
+            juego.getBaraja().getCartas().remove(0);
+            insertarImv(c,width,height,mazoMaquina,false,juego,jugador, timer);
+            mostrarDialogoEmergente("La maquina no tiene cartas para jugar! Se le ha agregado una carta de la baraja!");
+        }
     }
     public void agregarCartaMano(int i, ArrayList<Carta> cartas, Juego juego, LinearLayout mazo,boolean bool,Jugador jugador, Timer timer){
 
@@ -317,82 +404,7 @@ public class MainActivity extends AppCompatActivity {
             imv.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if(c instanceof CartaNumerica){
-                        if(c.getColor() == color || c.getValor().equals(lineaJuego.get(0).getValor())){
-                            lineaJuego.add(0,c);
-                            color = c.getColor();
-                            linea.removeAllViews();
-                            insertarImv(c,width,height,linea,false,juego,jugador, timer);
-                            mazoJugador.removeView(imv);
-                            jugador.getCartas().remove(c);
-                            if(color == Carta.Color.R){
-                                linea.setBackgroundColor(Color.RED);
-                            } else if (color == Carta.Color.V) {
-                                linea.setBackgroundColor(Color.GREEN);
-                            }else if( color == Carta.Color.A){
-                                linea.setBackgroundColor(Color.YELLOW);
-                            }else if(color == Carta.Color.Z){
-                                linea.setBackgroundColor(Color.BLUE);
-                            }
-                            timer.schedule(new TimerTask() {
-                                @Override
-                                public void run() {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            maquina(juego,jugador,width,height, timer);
-                                            if(juego.getManoMaquina().size() == 1){
-                                                mostrarDialogoEmergente("UNO!");
-                                            }else if(juego.getManoMaquina().isEmpty()){
-                                                mostrarDialogoEmergente("Ganó la maquina!");
-                                            }
-                                        }
-                                    });
-                                }
-                            },1000);
-
-
-                        }
-                    }else{
-                        if(c.getColor() == color || c.getColor() == Carta.Color.N){
-                            if(c.getColor() == Carta.Color.N){
-                                mostrarDialogoEmergente(c,juego,jugador, timer);
-
-
-                            }else{
-                                switch (c.getValor()) {
-                                    case "+2":
-                                        agregarCartaMano(2, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
-                                        mostrarDialogoEmergente(2, false, timer, juego, jugador);
-
-                                        break;
-                                    case "+4":
-                                        agregarCartaMano(4, juego.getManoMaquina(), juego, mazoMaquina, false, jugador, timer);
-                                        mostrarDialogoEmergente(4, false, timer, juego, jugador);
-
-                                        break;
-                                    case "^":
-                                    case "&":
-                                        mostrarDialogoEmergente("La máquina pierde el turno!");
-                                        break;
-                                }
-                                color = c.getColor();
-                            }
-                            linea.removeAllViews();
-                            mazoJugador.removeView(imv);
-                            jugador.getCartas().remove(c);
-                            lineaJuego.add(0,c);
-                            insertarImv(c,width,height,linea,false,juego,jugador, timer);
-                            if(jugador.getCartas().size()== 1){
-                                mostrarDialogoEmergente("UNO!");
-                            }else if(jugador.getCartas().isEmpty()){
-                                mostrarDialogoEmergente("GANASTE!");
-
-                            }
-
-                        }
-                    }
-
+                    jugador(c,juego,jugador,timer,width,height,imv);
 
                 }
 
@@ -401,92 +413,6 @@ public class MainActivity extends AppCompatActivity {
         }
         mazo.addView(imv);
     }
-
-    public void maquina(Juego juego,Jugador jugador,int width,int height, Timer timer){
-        if(isPlayerBlocked){
-            /* Entra aquí cuando la maquina bloquea al jugador y tiene que volver a lanzar carta. Se usa recursividad aquí*/
-            isPlayerBlocked = false;
-            maquina(juego,jugador,width,height, timer);
-        }else{
-            /* Aquí empezara a buscar la primera carta que pueda lanzar*/
-            for(Carta carta: juego.getManoMaquina()){
-                if(carta instanceof CartaNumerica){
-                    if(carta.getValor().equals(lineaJuego.get(0).getValor()) || carta.getColor() == lineaJuego.get(0).getColor()){
-                        color = carta.getColor();
-                        linea.removeAllViews();
-                        insertarImv(carta,width,height,linea,mazoMaquina);
-                        lineaJuego.add(0,carta);
-                        juego.getManoMaquina().remove(carta);
-                        if(color == Carta.Color.R){
-                            linea.setBackgroundColor(Color.RED);
-                        } else if (color == Carta.Color.V) {
-                            linea.setBackgroundColor(Color.GREEN);
-                        }else if( color == Carta.Color.A){
-                            linea.setBackgroundColor(Color.YELLOW);
-                        }else if(color == Carta.Color.Z){
-                            linea.setBackgroundColor(Color.BLUE);
-                        }
-                        /* Los returns que ven aqui sirve para que, al encontrar una carta y lanzar, ya salga de la función.
-                        * Si no le ponemos el return el for seguirá buscando y lanzando cartas. */
-                        return;
-                    }
-                }else{
-                    /* Aquí entra para las cartas comodin*/
-                    if(carta.getColor() == color || carta.getColor() == Carta.Color.N ){
-                        if(carta.getColor() == Carta.Color.N){
-                            mostrarDialogoEmergenteMaquina(carta,jugador,juego,timer);
-
-                            linea.removeAllViews();
-                            lineaJuego.add(0,carta);
-                            insertarImv(carta,width,height,linea,mazoMaquina);
-                            juego.getManoMaquina().remove(carta);
-                        }else{
-                            switch (carta.getValor()) {
-                                case "+2":
-                                    agregarCartaMano(2, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
-                                    mostrarDialogoEmergente(2, true, timer, juego, jugador);
-
-                                    break;
-                                case "+4":
-                                    agregarCartaMano(4, jugador.getCartas(), juego, mazoJugador, true, jugador, timer);
-                                    mostrarDialogoEmergente(4, true, timer, juego, jugador);
-
-                                    break;
-                                case "^":
-                                case "&":
-                                    mostrarDialogoEmergente("Perdiste el turno!");
-                                    isPlayerBlocked = true;
-                                    linea.removeAllViews();
-                                    lineaJuego.add(0, carta);
-                                    insertarImv(carta, width, height, linea, mazoMaquina);
-                                    juego.getManoMaquina().remove(carta);
-                                    maquina(juego, jugador, width, height, timer);
-                                    return;
-                            }
-                            color = carta.getColor();
-                            linea.removeAllViews();
-                            lineaJuego.add(0,carta);
-                            insertarImv(carta,width,height,linea,mazoMaquina);
-                            juego.getManoMaquina().remove(carta);
-                        }
-
-                        return;
-                    }
-
-
-
-                }
-            }
-            /* Aqui entra cuando no encuentra ninguna carta para lanzar. Tomará una carta automaticamente de la baraja y perderá el turno*/
-            Carta c = juego.getBaraja().getCarta(0);
-            juego.getManoMaquina().add(c);
-            juego.getBaraja().getCartas().remove(0);
-            insertarImv(c,width,height,mazoMaquina,false,juego,jugador, timer);
-            mostrarDialogoEmergente("La maquina no tiene cartas para jugar! Se le ha agregado una carta de la baraja!");
-        }
-    }
-
-
 
     private void mostrarDialogoEmergente(Carta c, Juego juego, Jugador jugador, Timer timer){
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
